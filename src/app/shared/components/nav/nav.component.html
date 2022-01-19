@@ -1,0 +1,27 @@
+<nav class=" d-flex justify-content-around bg-light">
+  <div class="logo">
+    <a [routerLink]="['/']" routerLinkActive="router-link-active">logo is here</a>
+  </div>
+  <ul class="nav d-flex">
+    <li class="nav-item" >
+    <a class="nav-link" [routerLink]="['/']" routerLinkActive="router-link-active">home</a>
+  </li>
+  <ng-container *ngIf="isLoggedIn$ | async">
+    <li class="nav-item" >
+      <a class="nav-link" [routerLink]="['/']">setting</a></li>
+      <li class="nav-item" >
+      <a
+        class="nav-link"
+        [routerLink]="['/']"
+        *ngIf="(currentUser$ | async)?.username"
+        >{{ (currentUser$ | async)?.username }}</a ></li>
+
+    </ng-container>
+    <ng-container *ngIf="isAnonymous$ | async">
+      <li class="nav-item" >
+      <a class="nav-link" [routerLink]="['register']">Sign in</a></li>
+      <li class="nav-item" >
+      <a class="nav-link" [routerLink]="['login']">Sign up</a></li>
+    </ng-container>
+  </ul>
+</nav>

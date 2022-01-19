@@ -1,0 +1,37 @@
+<div class="auth-page">
+  <div class="container page">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 col-xs-12">
+        <h1 class="text-xs-center text-center">sign up</h1>
+        <p class="text-xs-center text-center">
+          <a [routerLink]="['/register']">Need  an account</a>
+        </p>
+        <div>
+      </div>
+      <backend-error-message *ngIf="backendErrors$|async" [errorMessage]="backendErrors$|async"></backend-error-message>
+        <form [formGroup]="loginForm" (ngSubmit)="submit()">
+          <fieldset class="form-group">
+            <input
+              type="text"
+              class="form-control form-control-lg"
+              placeholder="Email"
+              formControlName='email'
+
+            />
+          </fieldset>
+          <fieldset class="form-group">
+            <input
+              type="password"
+              class="form-control form-control-lg"
+              placeholder="Password"
+              formControlName='password'
+            />
+          </fieldset>
+          <div class="d-flex flex-row justify-content-center">
+            <button class="btn btn-primary btn-lg" type="submit" [disabled]=" this.isSubmitted$|async">Sign up</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
