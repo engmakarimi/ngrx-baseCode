@@ -1,6 +1,10 @@
 import { getUserAction } from './auth/store/actions/getUser.action';
 import { Store } from '@ngrx/store';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { SwUpdate } from '@angular/service-worker';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AddToHomeScreenService } from './shared/services/addToHomeScreen.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +12,50 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(private store: Store) {}
+
+
+  @HostListener('window:beforeinstallprompt', ['$event'])
+  onEventFire(e:any) {
+    console.log('window:beforeinstallprompt is firing ')
+  this.a2hs.deferredPrompt = e;
+  }
+
+  isAddToHomeScreenEnabled$:BehaviorSubject<boolean>;
+  constructor(private store: Store,private sw:SwUpdate,private modalService: NgbModal,private a2hs: AddToHomeScreenService) {
+
+    this.isAddToHomeScreenEnabled$ = this.a2hs.deferredPromptFired;
+
+  }
   ngOnInit() {
     this.store.dispatch(getUserAction());
+
+    if(this.sw.isEnabled){
+      window.alert('hello');
+      this.sw.versionUpdates.subscribe(
+        (event)=>{
+          console.log(event)
+           if(event){
+            window.alert('version update');
+             this.sw.activateUpdate().then( p =>{
+                 location.reload();
+             });
+           }
+        }
+      )
+
+    }
+    this.isAddToHomeScreenEnabled$.subscribe( p =>{
+      console.log(p);
+      this.a2hs.showPrompt();
+    })
+  }
+
+
+  open(content:any) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.a2hs.showPrompt();
+    }, (reason) => {
+
+    });
   }
 }
