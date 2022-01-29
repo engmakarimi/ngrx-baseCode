@@ -14,13 +14,13 @@
   <div class="modal-body">
     <p> Do you want install pwa</p>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">yes</button>
+  <div class="modal-footer  ">
+    <button type="button" class="btn btn-dark" (click)="modal.close('Save click')">yes</button>
   </div>
 </ng-template>
 
-<button class="btn btn-lg btn-outline-primary" (click)="open(content)">install pwa </button>
-
+<button   *ngIf="a2hs.deferredPromptFired|async" class="btn m-5 btn-primary" (click)="open(content)">install pwa </button>
+app is already install? {{a2hs.deferredPromptFired|async}}
 <hr>
 
 

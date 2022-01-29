@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   onEventInstallFire(e: any) {
  //   hideInstallPromotion();
  this.a2hs.deferredPrompt = null;
+   
  console.log('PWA was installed');alert('PWA was installed');
   }
 
@@ -36,7 +37,7 @@ export class AppComponent implements OnInit {
     private store: Store,
     private sw: SwUpdate,
     private modalService: NgbModal,
-    private a2hs: AddToHomeScreenService
+    public a2hs: AddToHomeScreenService
   ) {
     this.isAddToHomeScreenEnabled$ = this.a2hs.deferredPromptFired;
   }
@@ -57,10 +58,11 @@ export class AppComponent implements OnInit {
         }
       });
     }
-    this.isAddToHomeScreenEnabled$.subscribe((p) => {
-      console.log(p);
-      this.a2hs.showPrompt();
-    });
+    //show install banner to user when initial application ;
+    // this.isAddToHomeScreenEnabled$.subscribe((p) => {
+    //   console.log(p);
+    //   this.a2hs.showPrompt();
+    // });
   }
 
   open(content: any) {
