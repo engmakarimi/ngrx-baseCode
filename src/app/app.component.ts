@@ -1,3 +1,4 @@
+import { environment } from './../environments/environment';
 import { getUserAction } from './auth/store/actions/getUser.action';
 import { Store } from '@ngrx/store';
 import { Component, HostListener, OnInit } from '@angular/core';
@@ -13,49 +14,64 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AppComponent implements OnInit {
 
-
+  // event before installing and use it for installing pwa
   @HostListener('window:beforeinstallprompt', ['$event'])
-  onEventFire(e:any) {
-    console.log('window:beforeinstallprompt is firing ')
-  this.a2hs.deferredPrompt = e;
+  onEventFire(e: any) {
+    console.log('window:beforeinstallprompt is firing ');
+    e.preventDefault();
+    this.a2hs.deferredPrompt = e;
+  }
+// event after install pwa
+  @HostListener('window:appinstalled', ['$event'])
+  onEventInstallFire(e: any) {
+ //   hideInstallPromotion();
+ this.a2hs.deferredPrompt = null;
+ console.log('PWA was installed');alert('PWA was installed');
   }
 
-  isAddToHomeScreenEnabled$:BehaviorSubject<boolean>;
-  constructor(private store: Store,private sw:SwUpdate,private modalService: NgbModal,private a2hs: AddToHomeScreenService) {
+  isAddToHomeScreenEnabled$: BehaviorSubject<boolean>;
 
+  appVersion:string='';
+  constructor(
+    private store: Store,
+    private sw: SwUpdate,
+    private modalService: NgbModal,
+    private a2hs: AddToHomeScreenService
+  ) {
     this.isAddToHomeScreenEnabled$ = this.a2hs.deferredPromptFired;
-
   }
   ngOnInit() {
+    this.appVersion=environment.appVersion;
+
     this.store.dispatch(getUserAction());
 
-    if(this.sw.isEnabled){
+    if (this.sw.isEnabled) {
       window.alert('hello');
-      this.sw.versionUpdates.subscribe(
-        (event)=>{
-          console.log(event)
-           if(event){
-            window.alert('version update');
-             this.sw.activateUpdate().then( p =>{
-                 location.reload();
-             });
-           }
+      this.sw.versionUpdates.subscribe((event) => {
+        console.log(event);
+        if (event) {
+          window.alert('version update');
+          this.sw.activateUpdate().then((p) => {
+            location.reload();
+          });
         }
-      )
-
+      });
     }
-    this.isAddToHomeScreenEnabled$.subscribe( p =>{
+    this.isAddToHomeScreenEnabled$.subscribe((p) => {
       console.log(p);
       this.a2hs.showPrompt();
-    })
+    });
   }
 
-
-  open(content:any) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.a2hs.showPrompt();
-    }, (reason) => {
-
-    });
+  open(content: any) {
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        (result) => {
+          alert('result');
+          this.a2hs.showPrompt();
+        },
+        (reason) => {}
+      );
   }
 }
