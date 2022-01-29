@@ -13,7 +13,6 @@ import { BehaviorSubject } from 'rxjs';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-
   // event before installing and use it for installing pwa
   @HostListener('window:beforeinstallprompt', ['$event'])
   onEventFire(e: any) {
@@ -21,18 +20,25 @@ export class AppComponent implements OnInit {
     e.preventDefault();
     this.a2hs.deferredPrompt = e;
   }
-// event after install pwa
+  // event after install pwa
   @HostListener('window:appinstalled', ['$event'])
   onEventInstallFire(e: any) {
- //   hideInstallPromotion();
- this.a2hs.deferredPrompt = null;
-   
- console.log('PWA was installed');alert('PWA was installed');
+    //   hideInstallPromotion();
+    this.a2hs.deferredPrompt = null;
+    this.installed = true;
+    console.log('PWA was installed');
+    alert('PWA was installed');
+  }
+  @HostListener('window:beforeinstallprompt', ['$event'])
+  onEventRightClick(e: any) {
+    if (this.installed) {
+      e.preventDefault();
+    }
   }
 
   isAddToHomeScreenEnabled$: BehaviorSubject<boolean>;
-
-  appVersion:string='';
+  installed: boolean = false;
+  appVersion: string = '';
   constructor(
     private store: Store,
     private sw: SwUpdate,
@@ -42,7 +48,7 @@ export class AppComponent implements OnInit {
     this.isAddToHomeScreenEnabled$ = this.a2hs.deferredPromptFired;
   }
   ngOnInit() {
-    this.appVersion=environment.appVersion;
+    this.appVersion = environment.appVersion;
 
     this.store.dispatch(getUserAction());
 
