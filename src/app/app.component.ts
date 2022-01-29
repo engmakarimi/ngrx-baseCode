@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
     console.log('PWA was installed');
     alert('PWA was installed');
   }
-  @HostListener('window:beforeinstallprompt', ['$event'])
+  @HostListener('document:contextmenu', ['$event'])
   onEventRightClick(e: any) {
     if (this.installed) {
       e.preventDefault();
