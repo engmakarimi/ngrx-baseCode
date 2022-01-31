@@ -15,44 +15,16 @@
       href="/assets/icons/icon-512x512.
 png"
     />
-    <link
-      rel="apple-touch-icon"
-      sizes="57x57"
-      href="/assets/icons/57.png"
-
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="76x76"
-      href="/assets/icons/80.png"
-
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="114x114"
-      href="/assets/icons/114.png"
-
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="167x167"
-      href="/assets/icons/120.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="152x152"
-      href="/assets/icons/180.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/assets/icons/180.png"
-    />
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/57.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/80.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/114.png" />
+    <link rel="apple-touch-icon" sizes="167x167" href="/assets/icons/120.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/180.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/180.png" />
     <link
       rel="apple-touch-icon"
       sizes="192x192"
       href="/assets/icons/1024.png"
-
     />
 
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
@@ -65,4 +37,30 @@ png"
       >Please enable JavaScript to continue using this application.</noscript
     >
   </body>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/ngsw-worker.js')
+        .then((registration) => {
+          // registeration object
+         console.log('Service worker is registered')
+          console.log('Service worker is registered', registration);
+        })
+        .catch((e) => {
+          console.error(
+            'Something went wrong while registaringservice worker.'
+          );
+        });
+
+      self.addEventListener('install', (event) => {
+        console.log('[SW.JS] Step 2, Service worker has been installed');
+        console.log('Service worker is install')
+      });
+      self.addEventListener('activate', (event) => {
+        console.log('[SW.JS] Step 2, Service worker has been activated');
+        console.log('Service worker is activate')
+      });
+    }
+  </script>
 </html>

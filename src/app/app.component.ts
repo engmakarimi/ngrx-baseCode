@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
     this.appVersion = environment.appVersion;
 
     this.store.dispatch(getUserAction());
-
+    
     if (this.sw.isEnabled) {
       window.alert('hello');
       this.sw.versionUpdates.subscribe((event) => {

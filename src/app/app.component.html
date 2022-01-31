@@ -20,7 +20,8 @@
 </ng-template>
 
 <button   *ngIf="a2hs.deferredPromptFired|async" class="btn m-5 btn-primary" (click)="open(content)">install pwa </button>
-app is already install? <p *ngIf="a2hs.deferredPromptFired|async">no</p><p *ngIf="!(a2hs.deferredPromptFired|async)">yes</p>
+app is already install? <span *ngIf="a2hs.deferredPromptFired|async">no</span><span *ngIf="!(a2hs.deferredPromptFired|async)">yes</span>
+
 
 <hr>
 
