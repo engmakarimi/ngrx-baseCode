@@ -50,8 +50,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.appVersion = environment.appVersion;
 
-    this.store.dispatch(getUserAction());
-    
+  //  this.store.dispatch(getUserAction());
+
     if (this.sw.isEnabled) {
       window.alert('hello');
       this.sw.versionUpdates.subscribe((event) => {
@@ -72,6 +72,11 @@ export class AppComponent implements OnInit {
   }
 
   open(content: any) {
+    navigator.geolocation.getCurrentPosition( position =>{
+
+    },error =>{
+      
+    })
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-basic-title' })
       .result.then(
